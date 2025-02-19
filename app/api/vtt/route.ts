@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function GET({ url }) {
+export async function GET({ url }: { url: string }) {
    console.log(url);
     const vttUrl = new URL(url).searchParams.get("vttUrl");
 
