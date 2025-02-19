@@ -15,11 +15,7 @@ export const fetchServer = async (
   tmdbOrImdbId: number
 ) => {
   const server = servers.at(serverNumber);
-
-  const url = `${server[type]}${tmdbOrImdbId ? `/${tmdbOrImdbId}` : ""}${
-    seasonNo ? `/${seasonNo}` : ""
-  }/${id}`;
-
+  
   try {
     const { data } = await axios.post("/api/fetch-server", {
       type,
