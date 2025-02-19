@@ -14,8 +14,7 @@ export const fetchServer = async (
   seasonNo: number,
   tmdbOrImdbId: number
 ) => {
-  const server = servers.at(serverNumber);
-  
+
   try {
     const { data } = await axios.post("/api/fetch-server", {
       type,
