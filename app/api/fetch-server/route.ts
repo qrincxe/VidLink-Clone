@@ -19,20 +19,31 @@ export const fetchServer = async (
   const url = `${server[type]}${tmdbOrImdbId ? `/${tmdbOrImdbId}` : ""}${
     seasonNo ? `/${seasonNo}` : ""
   }/${id}`;
-  console.log({ url })
+  console.log({ url });
   try {
     const { data } = await axios.get(url);
     console.log({ data });
     return data;
   } catch (e) {
     console.error(e);
+    return e;
   }
 };
 
 export async function POST(req, res) {
   const { type, serverNumber, id, seasonNo, tmdbOrImdbId } = await req.json();
-  console.log({ type, seasonNo, serverNumber, id, tmdbOrImdbId })
-  const serverData = await fetchServer(type, serverNumber, id, seasonNo, tmdbOrImdbId)
+  console.log({ type, seasonNo, serverNumber, id, tmdbOrImdbId });
+  try {
+    const serverData = await fetchServer(
+      type,
+      serverNumber,
+      id,
+      seasonNo,
+      tmdbOrImdbId
+    );
 
     return Response.json(serverData);
+  } catch (e) {
+    return Response.json(e, { status: 500 });
+  }
 }

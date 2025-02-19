@@ -25,8 +25,9 @@ export interface State {
   captionsExpanded: boolean;
   videoRef: React.RefObject<HTMLVideoElement>;
   playbackSpeed: number;
-  currentLanguage: string;
+  currentLanguage: { name: string; url: string };
   languages: { name: string; url: string }[];
+  languagesExpanded: boolean;
 }
 
 export interface SetState {
@@ -51,8 +52,9 @@ export interface SetState {
   setCaptionsExpanded: (captionsExpanded: boolean) => void;
   setVideoRef: (videoRef: React.RefObject<HTMLVideoElement>) => void;
   setPlaybackSpeed: (number) => void;
-  setCurrentLanguage: (language: string) => void;
+  setCurrentLanguage: (language: { name: string; url: string }) => void;
   setLanguages: (languages: { name: string; url: string }[]) => void;
+  setLanguagesExpanded: (languagesExpanded: boolean) => void;
 }
 
 export const useVideoStore = create<State & SetState>((set) => ({
@@ -79,12 +81,13 @@ export const useVideoStore = create<State & SetState>((set) => ({
     url: "",
   },
   currentServer: 0,
-  currentLanguage: "English",
+  currentLanguage: { name: "Auto", url: "" },
 
   serversExpanded: false,
   settingsExpanded: false,
   captionsExpanded: false,
   qualitiesExpanded: false,
+  languagesExpanded: false,
   videoRef: { current: undefined },
 
   setM3u8URL: (m3u8URL: string) => set({ m3u8URL }),
@@ -112,7 +115,10 @@ export const useVideoStore = create<State & SetState>((set) => ({
   setVideoRef: (videoRef: React.RefObject<HTMLVideoElement>) =>
     set({ videoRef }),
   setPlaybackSpeed: (speed: number) => set({ playbackSpeed: speed }),
-  setCurrentLanguage: (language: string) => set({ currentLanguage: language }),
+  setCurrentLanguage: (language: { name: string; url: string }) =>
+    set({ currentLanguage: language }),
   setLanguages: (languages: { name: string; url: string }[]) =>
     set({ languages }),
+  setLanguagesExpanded: (languagesExpanded: boolean) =>
+    set({ languagesExpanded }),
 }));

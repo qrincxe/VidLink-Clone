@@ -4,7 +4,7 @@ export const servers = [
         tvShows: 'https://od.autoembed.cc/tv'
     },
     {
-        movie: 'https://op.autoembed.cc/hehe',
+        movie: 'https://op.autoembed.cc/hehe/movie',
         tvShows: 'https://op.autoembed.cc/hehe/tv'
     },
     {

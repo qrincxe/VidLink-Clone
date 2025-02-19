@@ -44,6 +44,8 @@ export default function Player({
     captions,
     setLanguages,
     languages,
+    setCurrentLanguage,
+    currentLanguage,
   } = useVideoStore();
   const videoStore = useVideoStore();
 
@@ -69,6 +71,28 @@ export default function Player({
       );
 
       if (Array.isArray(serverData)) {
+        const autoLang = serverData.find(
+          (e) => e.language.toLowerCase() === "english"
+        );
+        let video =
+          currentLanguage.name !== "Auto"
+            ? serverData.find(
+                (e) =>
+                  e.language.toLowerCase() ===
+                  currentLanguage.name.toLowerCase()
+              )
+            : autoLang;
+        console.log(currentLanguage, video);
+
+        if (video === -1) video = serverData.at(0);
+        setM3u8URL(video.link);
+        setCurrentLanguage({
+          name: video.language,
+          url: video.link,
+        });
+        setLanguages([
+          ...serverData.map((e) => ({ name: e.language, url: e.link })),
+        ]);
       }
 
       if (serverData.captions) {

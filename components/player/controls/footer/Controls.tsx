@@ -10,7 +10,7 @@ import ArrowLeft from "@/components/vectors/Arrow";
 import RadioActive from "@/components/vectors/RadioActive";
 import RadioInactive from "@/components/vectors/RadioInactive";
 import Quality from "@/components/vectors/Quality";
-import { Clock, Server } from "lucide-react";
+import { Clock, Languages, Server } from "lucide-react";
 import MiniScreenIcon from "@/components/vectors/MiniScreenIcon";
 import FullscreenIcon from "@/components/vectors/FullscreenIcon";
 import { formatDuration } from "@/lib/utils";
@@ -49,8 +49,14 @@ export default function Footer({ videoStore }: videoStoreOptions) {
     setServersExpanded,
     playbackSpeed,
     setPlaybackSpeed,
+    languages,
+    setLanguages,
+    currentLanguage,
+    languagesExpanded,
+    setCurrentLanguage,
+    setLanguagesExpanded,
   } = videoStore;
-  
+
   const togglePlayback = () => {
     switch (playbackSpeed) {
       case 0.5:
@@ -76,25 +82,35 @@ export default function Footer({ videoStore }: videoStoreOptions) {
   const toggleCaptions = () => {
     setServersExpanded(false);
     setQualitiesExpanded(false);
+    setLanguagesExpanded(false)
     setCaptionsExpanded(!captionsExpanded);
   };
 
   const toggleServer = () => {
     setCaptionsExpanded(false);
     setQualitiesExpanded(false);
+    setLanguagesExpanded(false)
     setServersExpanded(!serversExpanded);
   };
 
   const toggleQuality = () => {
     setCaptionsExpanded(false);
     setServersExpanded(false);
+    setLanguagesExpanded(false)
     setQualitiesExpanded(!qualitiesExpanded);
   };
 
   const toggleSettingsDropdown = () => {
     setCaptionsExpanded(false);
     setServersExpanded(false);
+    setLanguagesExpanded(false)
     setSettingsExpanded(!settingsExpanded);
+  };
+
+  const toggleLanguages = () => {
+    setCaptionsExpanded(false);
+    setServersExpanded(false);
+    setLanguagesExpanded(!languagesExpanded);
   };
 
   return (
@@ -265,6 +281,40 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                             <RadioInactive />
                           )}
                           Server {serverIndex + 1}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+              <div onClick={toggleLanguages}>
+                <button>
+                  <Languages /> Language
+                </button>
+                <span>
+                  {currentLanguage.name} <ArrowLeft />
+                </span>
+              </div>
+              {languagesExpanded ? (
+                <>
+                  <div className="expanded__list">
+                    {languages.map((language) => {
+                      console.log({language, currentLanguage})
+                      return (
+                        <div
+                          onClick={() => {
+                            setCurrentLanguage(language);
+                          }}
+                          key={language.name}
+                        >
+                          {language.name === currentLanguage.name ? (
+                            <RadioActive />
+                          ) : (
+                            <RadioInactive />
+                          )}
+                          {language.name}
                         </div>
                       );
                     })}
