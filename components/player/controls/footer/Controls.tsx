@@ -50,7 +50,6 @@ export default function Footer({ videoStore }: videoStoreOptions) {
     playbackSpeed,
     setPlaybackSpeed,
     languages,
-    setLanguages,
     currentLanguage,
     languagesExpanded,
     setCurrentLanguage,

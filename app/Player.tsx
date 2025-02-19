@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Hls from "hls.js";
 import { fetchServer } from "@/lib/fetchServer";
 import VideoControls from "@/components/player/VideoControls";
@@ -43,7 +43,6 @@ export default function Player({
     setIsLoading,
     captions,
     setLanguages,
-    languages,
     setCurrentLanguage,
     currentLanguage,
   } = useVideoStore();

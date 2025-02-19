@@ -1,5 +1,6 @@
 import { servers } from "@/lib/servers";
 import axios from "axios";
+import { NextRequest } from "next/server";
 
 /**
  * 
@@ -30,7 +31,7 @@ const fetchServer = async (
   }
 };
 
-export async function POST(req, res) {
+export async function POST(req: NextRequest) {
   const { type, serverNumber, id, seasonNo, tmdbOrImdbId } = await req.json();
   console.log({ type, seasonNo, serverNumber, id, tmdbOrImdbId });
   try {

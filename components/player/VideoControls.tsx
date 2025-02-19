@@ -1,4 +1,4 @@
-import { SetState, State, useVideoStore } from "../state";
+import { SetState, State } from "../state";
 // import PlayIcon from "@/components/vectors/PlayIcon";
 // import PauseIcon from "@/components/vectors/PauseIcon";
 // import Back10S from "@/components/vectors/Back10S";

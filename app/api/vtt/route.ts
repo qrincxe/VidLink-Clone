@@ -1,7 +1,8 @@
 import axios from "axios";
+import { NextRequest } from "next/server";
 
-export async function GET({ url }: { url: string }) {
-   console.log(url);
+export async function GET(req: NextRequest) {
+    const { url } = req;
     const vttUrl = new URL(url).searchParams.get("vttUrl");
 
   if (!vttUrl) {
