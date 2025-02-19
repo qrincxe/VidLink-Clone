@@ -217,7 +217,7 @@ export default function Player({
               <track
                 kind="subtitles"
                 srcLang={caption.lang}
-                src={`http://localhost:3000/api/vtt?vttUrl=${caption.url}`}
+                src={`${window.location.origin}/api/vtt?vttUrl=${caption.url}`}
               ></track>
             ) : null;
           })}

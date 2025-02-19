@@ -16,8 +16,7 @@ export default function Timeline({ videoStore }: videoStoreOptions) {
         style={
           {
             "--timeline-color": "blue",
-            "--progress-position":
-              isLoading || duration === 0 ? 0 : progressPercentage,
+            "--progress-position": duration === 0 ? 0 : progressPercentage,
           } as React.CSSProperties
         }
         onClick={(e) => {
@@ -27,7 +26,7 @@ export default function Timeline({ videoStore }: videoStoreOptions) {
           const time = percent * duration;
           setCurrentTime(time);
           setProgressPercentage(percent);
-          
+
           if (videoRef.current) {
             videoRef.current.currentTime = time;
           }
