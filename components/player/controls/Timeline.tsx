@@ -16,7 +16,12 @@ export default function Timeline({ videoStore }: videoStoreOptions) {
         style={
           {
             "--timeline-color": "blue",
-            "--progress-position": duration === 0 ? 0 : progressPercentage,
+            "--progress-position":
+              duration === 0
+                ? 0
+                : Number.isNaN(progressPercentage)
+                ? 0
+                : progressPercentage,
           } as React.CSSProperties
         }
         onClick={(e) => {
