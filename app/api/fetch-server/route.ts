@@ -7,7 +7,7 @@ Mydomain.com/embed/movie/{tmdb or IMDb I'd}
 
 Mydomain.com/embed/tv/{tmdb or IMDb I'd}/{season no}/{episode no}
  */
-export const fetchServer = async (
+const fetchServer = async (
   type: "movie" | "tvShows",
   serverNumber: number,
   id: number | string,
