@@ -109,6 +109,7 @@ export default function Footer({ videoStore }: videoStoreOptions) {
   const toggleLanguages = () => {
     setCaptionsExpanded(false);
     setServersExpanded(false);
+    setQualitiesExpanded(false);
     setLanguagesExpanded(!languagesExpanded);
   };
 
