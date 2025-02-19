@@ -13,8 +13,8 @@ export default function RadioActive() {
         fill="currentColor"
       ></path>{" "}
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M26.6666 16C26.6666 21.891 21.891 26.6667 16 26.6667C10.1089 26.6667 5.33331 21.891 5.33331 16C5.33331 10.109 10.1089 5.33334 16 5.33334C21.891 5.33334 26.6666 10.109 26.6666 16ZM24 16C24 20.4183 20.4183 24 16 24C11.5817 24 7.99998 20.4183 7.99998 16C7.99998 11.5817 11.5817 8.00001 16 8.00001C20.4183 8.00001 24 11.5817 24 16Z"
         fill="currentColor"
       ></path>
