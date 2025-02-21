@@ -165,6 +165,7 @@ export default function Footer({ videoStore }: videoStoreOptions) {
               {serversExpanded ? (
                 <>
                   <div className="expanded__list">
+                    <span className="font-semibold text-lg">Servers</span>
                     {servers
                       // .sort(
                       //   (serverA, serverB) => serverA.number - serverB.number
@@ -182,7 +183,7 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                             ) : (
                               <RadioInactive />
                             )}
-                            {server.language} - {server.number}
+                            {server.language} - {server.number + 1}
                           </div>
                         );
                       })}
