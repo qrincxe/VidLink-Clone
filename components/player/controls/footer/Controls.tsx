@@ -10,12 +10,11 @@ import ArrowLeft from "@/components/vectors/Arrow";
 import RadioActive from "@/components/vectors/RadioActive";
 import RadioInactive from "@/components/vectors/RadioInactive";
 import Quality from "@/components/vectors/Quality";
-import { Clock, Languages, Server } from "lucide-react";
+import { Clock, CloudIcon, Server } from "lucide-react";
 import MiniScreenIcon from "@/components/vectors/MiniScreenIcon";
 import FullscreenIcon from "@/components/vectors/FullscreenIcon";
 import { formatDuration } from "@/lib/utils";
 import { videoStoreOptions } from "../../VideoControls";
-import { servers } from "@/lib/servers";
 
 export default function Footer({ videoStore }: videoStoreOptions) {
   const {
@@ -49,11 +48,7 @@ export default function Footer({ videoStore }: videoStoreOptions) {
     setServersExpanded,
     playbackSpeed,
     setPlaybackSpeed,
-    languages,
-    currentLanguage,
-    languagesExpanded,
-    setCurrentLanguage,
-    setLanguagesExpanded,
+    servers,
   } = videoStore;
 
   const togglePlayback = () => {
@@ -79,38 +74,25 @@ export default function Footer({ videoStore }: videoStoreOptions) {
   };
 
   const toggleCaptions = () => {
-    setServersExpanded(false);
     setQualitiesExpanded(false);
-    setLanguagesExpanded(false)
     setCaptionsExpanded(!captionsExpanded);
   };
 
-  const toggleServer = () => {
+  const toggleServers = () => {
     setCaptionsExpanded(false);
     setQualitiesExpanded(false);
-    setLanguagesExpanded(false)
+    setSettingsExpanded(false);
     setServersExpanded(!serversExpanded);
   };
 
   const toggleQuality = () => {
     setCaptionsExpanded(false);
-    setServersExpanded(false);
-    setLanguagesExpanded(false)
     setQualitiesExpanded(!qualitiesExpanded);
   };
 
   const toggleSettingsDropdown = () => {
     setCaptionsExpanded(false);
-    setServersExpanded(false);
-    setLanguagesExpanded(false)
     setSettingsExpanded(!settingsExpanded);
-  };
-
-  const toggleLanguages = () => {
-    setCaptionsExpanded(false);
-    setServersExpanded(false);
-    setQualitiesExpanded(false);
-    setLanguagesExpanded(!languagesExpanded);
   };
 
   return (
@@ -256,65 +238,35 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                   {playbackSpeed}x <ArrowLeft />
                 </span>
               </div>
-              <div onClick={toggleServer}>
-                <button>
-                  <Server /> Server
-                </button>
-                <span>
-                  Server {currentServer + 1} <ArrowLeft />
-                </span>
-              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className={`dropdown ${toggleServers ? "active" : null}`}>
+          <button className="settings__btn">
+            <CloudIcon />
+          </button>
+          <div
+            className={`dropdown__menu ${serversExpanded ? "active" : null}`}
+          >
+            <div className="dropdown__content">
               {serversExpanded ? (
                 <>
                   <div className="expanded__list">
-                    {servers.map((server, serverIndex) => {
+                    {servers.map((server) => {
                       return (
                         <div
                           onClick={() => {
-                            setCurrentServer(serverIndex);
+                            setCurrentServer(server);
                           }}
-                          key={serverIndex}
+                          key={server.name}
                         >
-                          {serverIndex === currentServer ? (
+                          {server.name === currentServer.name ? (
                             <RadioActive />
                           ) : (
                             <RadioInactive />
                           )}
-                          Server {serverIndex + 1}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
-              <div onClick={toggleLanguages}>
-                <button>
-                  <Languages /> Language
-                </button>
-                <span>
-                  {currentLanguage.name} <ArrowLeft />
-                </span>
-              </div>
-              {languagesExpanded ? (
-                <>
-                  <div className="expanded__list">
-                    {languages.map((language) => {
-                      console.log({language, currentLanguage})
-                      return (
-                        <div
-                          onClick={() => {
-                            setCurrentLanguage(language);
-                          }}
-                          key={language.name}
-                        >
-                          {language.name === currentLanguage.name ? (
-                            <RadioActive />
-                          ) : (
-                            <RadioInactive />
-                          )}
-                          {language.name}
+                          {server.language} - {server.name}
                         </div>
                       );
                     })}

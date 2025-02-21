@@ -1,5 +1,18 @@
 import { create } from "zustand";
 
+export interface Caption { 
+  lang: string;
+  url: string;
+}
+
+export interface Server { 
+  id: string;
+  url: string;
+  language: string;
+  captions: Caption[]
+  number: number;
+}
+
 export interface State {
   m3u8URL: string;
   isPlaying: boolean;
@@ -15,19 +28,14 @@ export interface State {
   currentQuality: string;
   qualitiesExpanded: boolean;
   isLoading: boolean;
-  captions: { url: string; lang: string }[];
-  currentCaption: {
-    lang: string;
-    url: string;
-  };
+  captions: Caption[];
+  currentCaption: Caption;
   serversExpanded: boolean;
-  currentServer: number;
+  currentServer: Server | undefined;
+  servers: Server[],
   captionsExpanded: boolean;
   videoRef: React.RefObject<HTMLVideoElement>;
   playbackSpeed: number;
-  currentLanguage: { name: string; url: string };
-  languages: { name: string; url: string }[];
-  languagesExpanded: boolean;
 }
 
 export interface SetState {
@@ -48,13 +56,11 @@ export interface SetState {
   setCaptions: (captions: { url: string; lang: string }[]) => void;
   setCurrentCaption: (currentCaption: { lang: string; url: string }) => void;
   setServersExpanded: (serversExpanded: boolean) => void;
-  setCurrentServer: (currentServer: number) => void;
+  setCurrentServer: (currentServer: Server) => void;
   setCaptionsExpanded: (captionsExpanded: boolean) => void;
   setVideoRef: (videoRef: React.RefObject<HTMLVideoElement>) => void;
   setPlaybackSpeed: (number) => void;
-  setCurrentLanguage: (language: { name: string; url: string }) => void;
-  setLanguages: (languages: { name: string; url: string }[]) => void;
-  setLanguagesExpanded: (languagesExpanded: boolean) => void;
+  setServers: (servers: Server[]) => void;
 }
 
 export const useVideoStore = create<State & SetState>((set) => ({
@@ -67,7 +73,6 @@ export const useVideoStore = create<State & SetState>((set) => ({
 
   qualities: ["Auto"],
   captions: [{ lang: "None", url: "" }],
-  languages: [{ name: "Auto", url: "" }],
 
   videoVolume: 1,
   duration: 0,
@@ -80,14 +85,13 @@ export const useVideoStore = create<State & SetState>((set) => ({
     lang: "None",
     url: "",
   },
-  currentServer: 0,
-  currentLanguage: { name: "Auto", url: "" },
+  currentServer: undefined,
+  servers: [],
 
   serversExpanded: false,
   settingsExpanded: false,
   captionsExpanded: false,
   qualitiesExpanded: false,
-  languagesExpanded: false,
   videoRef: { current: undefined },
 
   setM3u8URL: (m3u8URL: string) => set({ m3u8URL }),
@@ -110,15 +114,11 @@ export const useVideoStore = create<State & SetState>((set) => ({
   setCurrentCaption: (currentCaption: { lang: string; url: string }) =>
     set({ currentCaption }),
   setServersExpanded: (serversExpanded: boolean) => set({ serversExpanded }),
-  setCurrentServer: (currentServer: number) => set({ currentServer }),
+  setCurrentServer: (currentServer: Server) => set({ currentServer }),
   setCaptionsExpanded: (captionsExpanded: boolean) => set({ captionsExpanded }),
   setVideoRef: (videoRef: React.RefObject<HTMLVideoElement>) =>
     set({ videoRef }),
   setPlaybackSpeed: (speed: number) => set({ playbackSpeed: speed }),
-  setCurrentLanguage: (language: { name: string; url: string }) =>
-    set({ currentLanguage: language }),
-  setLanguages: (languages: { name: string; url: string }[]) =>
-    set({ languages }),
-  setLanguagesExpanded: (languagesExpanded: boolean) =>
-    set({ languagesExpanded }),
+  setServers: (servers: Server[]) => set({ servers }),
+  
 }));

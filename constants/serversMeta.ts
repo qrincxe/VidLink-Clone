@@ -1,4 +1,4 @@
-export const servers = [
+export const serversMeta = [
     {
         movie: 'https://od.autoembed.cc/movie',
         tvShows: 'https://od.autoembed.cc/tv'

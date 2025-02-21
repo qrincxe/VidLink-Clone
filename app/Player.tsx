@@ -4,7 +4,9 @@ import { useEffect, useRef } from "react";
 import Hls from "hls.js";
 import { fetchServer } from "@/lib/fetchServer";
 import VideoControls from "@/components/player/VideoControls";
-import { useVideoStore } from "@/components/state";
+import { Server, useVideoStore } from "@/components/state";
+import { serversMeta } from "@/constants/serversMeta";
+import { createId } from "@/lib/createId";
 
 interface PlayerProps {
   type: "movie" | "tvShows";
@@ -24,6 +26,7 @@ export default function Player({
     setCurrentTime,
     setDuration,
     currentServer,
+    setCurrentServer,
     setCaptions,
     setM3u8URL,
     setProgressPercentage,
@@ -42,9 +45,8 @@ export default function Player({
     currentQuality,
     setIsLoading,
     captions,
-    setLanguages,
-    setCurrentLanguage,
-    currentLanguage,
+    setServers,
+    servers,
   } = useVideoStore();
   const videoStore = useVideoStore();
 
@@ -60,56 +62,111 @@ export default function Player({
   };
 
   useEffect(() => {
-    const configureServer = async () => {
-      const serverData = await fetchServer(
-        type,
-        currentServer,
-        id,
-        seasonNo,
-        tmdbOrImdbId
-      );
-
-      if (Array.isArray(serverData)) {
-        const autoLang = serverData.find(
-          (e) => e.language.toLowerCase() === "english"
+    const fetchServers = async () => {
+      for (const serverIndex in serversMeta) {
+        const serverData = await fetchServer(
+          type,
+          Number(serverIndex),
+          id,
+          seasonNo,
+          tmdbOrImdbId
         );
-        let video =
-          currentLanguage.name !== "Auto"
-            ? serverData.find(
-                (e) =>
-                  e.language.toLowerCase() ===
-                  currentLanguage.name.toLowerCase()
-              )
-            : autoLang;
-        console.log(currentLanguage, video);
 
-        if (video === -1) video = serverData.at(0);
-        setM3u8URL(video.link);
-        setCurrentLanguage({
-          name: video.language,
-          url: video.link,
-        });
-        setLanguages([
-          ...serverData.map((e) => ({ name: e.language, url: e.link })),
-        ]);
-      }
+        if (!serverData) return;
+        /**
+   * [
+  {
+    "language": "Hindi",
+    "link": "https://i-cdn-0.vista335lopq.com/stream2/i-cdn-0/a992af17d36b4ea9531c436ab6fa3dd8/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2pFVJdnWEVkMOpmSplleCpWWXVFMa1mSqllaJdnWEpEaadUR610RGtmWXVUP:1740168988:94.232.244.159:7babe8511efca1e23cc28a96d1783fd5c26934c3d6b98dc909df6ab80edd82b4/index.m3u8"
+  },
+  {
+    "language": "English",
+    "link": "https://i-cdn-0.vista335lopq.com/stream2/i-cdn-0/a992af17d36b4ea9531c436ab6fa3dd8/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT25UbZNjWqtWNPRVQ55kaVVjTt1kMN1WS65kaGxmWUlkMNR0Y140RFBTWqdWP:1740168988:94.232.244.159:dc7f11bca7c3a28d8b06a084fb6727df0df77a1b040ea1cab60f25116d69c505/index.m3u8"
+  }
+]
+   */
 
-      if (serverData.captions) {
-        setCaptions([{ url: "", lang: "None" }, ...serverData.captions]);
-      }
+        if (Array.isArray(serverData)) {
+          for (const { language, link, captions = [] } of serverData) {
+            const serverInfo: Server = {
+              id: createId(),
+              language,
+              url: link,
+              captions: captions || [],
+              number: Number(serverIndex),
+            };
+            setServers([...servers, serverInfo]);
+          }
+        }
+        /**
+ * {
+  "sources": [
+    {
+      "quality": "HLS",
+      "source": "#Hà Nội (Vietsub) (Full)",
+      "url": "https://s2.phim1280.tv/20231017/20MEMVbZ/index.m3u8",
+      "format": "hls"
+    }
+  ],
+  "captions": []
+}
+ */
+        if (serverData.sources) {
+          const source = serverData?.sources?.at(0);
+          if (!source) return;
+          const serverInfo: Server = {
+            id: createId(),
+            language: "English",
+            url: source.url,
+            captions: serverData?.captions,
+            number: Number(serverIndex),
+          };
+          setServers([...servers, serverInfo]);
+        }
 
-      if (serverData.playlistUrl) {
-        setM3u8URL(serverData.playlistUrl);
+        /**
+         * {
+  "playlistUrl": "https://tralvoxmoon.xyz/file2/hVVXChVCKftfkcE4G5Pabueu~TFYKm7z3fJ9BpS151g8M5Jm8oCGq4+8gswvJouLmt~LvyDqwY0jyy0BOD1iBCBQeLuo77glkzOaW8y3fV9Gw~cG5EE1qzr5BfhUadCo3GwH1AVUudBYcIT7akGNw7nYrk071CXDcury7~dwoo8=/cGxheWxpc3QubTN1OA==.m3u8",
+  "captions": [
+    {
+      "url": "https://cca.megafiles.store/a6/96/a696a1e5a8079caa360ca3136d9f2b7f/a696a1e5a8079caa360ca3136d9f2b7f.vtt",
+      "lang": "Arabic"
+    },
+    {
+      "url": "https://cca.megafiles.store/7a/dc/7adcb1142882f2dba88bf8ea762a9575/7adcb1142882f2dba88bf8ea762a9575.vtt",
+      "lang": "English"
+    }
+  ]
+}
+         */
+        if (serverData.playlistUrl) {
+          const serverInfo: Server = {
+            id: createId(),
+            language: "English",
+            url: serverData.playlistUrl,
+            captions: serverData?.captions,
+            number: Number(serverIndex),
+          };
+          setServers([...servers, serverInfo]);
+          if (!currentServer) {
+            setCurrentServer(serverInfo);
+          }
+        }
       }
+    };
+    fetchServers();
+  }, [id, tmdbOrImdbId, seasonNo, type]);
 
-      if (serverData.sources) {
-        setM3u8URL(serverData.sources[0].url);
-      }
+  useEffect(() => {
+    const configureServer = async () => {
+      const server = servers.find((server) => server.id === currentServer.id);
+      if (!server) return;
+      setM3u8URL(server.url);
     };
     try {
       configureServer();
     } catch {}
-  }, [id, tmdbOrImdbId, seasonNo, type, currentServer]);
+  }, [id, tmdbOrImdbId, seasonNo, type, servers, currentServer]);
 
   useEffect(() => {
     if (!videoRef.current) return;
@@ -124,7 +181,7 @@ export default function Player({
         );
       }
     };
-  }, []);
+  }, [videoRef]);
 
   useEffect(() => {
     if (videoRef.current)
@@ -133,8 +190,11 @@ export default function Player({
 
   useEffect(() => {
     if (!videoRef.current) return;
-    if (isPlaying) videoRef.current.play().catch(() => setIsPlaying(false));
-    else videoRef.current.pause();
+    if (isPlaying) {
+      videoRef.current.play().catch(() => setIsPlaying(false));
+    } else {
+      videoRef.current.pause();
+    }
     videoRef.current.volume = isMuted ? 0 : videoVolume;
     videoRef.current.playbackRate = playbackSpeed;
   }, [isPlaying, videoVolume, isMuted, playbackSpeed]);

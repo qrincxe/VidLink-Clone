@@ -1,4 +1,3 @@
-import { servers } from "./servers";
 import axios from "axios";
 
 /**
@@ -14,7 +13,6 @@ export const fetchServer = async (
   seasonNo: number,
   tmdbOrImdbId: number
 ) => {
-
   try {
     const { data } = await axios.post("/api/fetch-server", {
       type,

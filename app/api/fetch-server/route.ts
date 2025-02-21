@@ -1,4 +1,4 @@
-import { servers } from "@/lib/servers";
+import { serversMeta } from "@/constants/serversMeta";
 import axios from "axios";
 import { NextRequest } from "next/server";
 
@@ -15,7 +15,7 @@ const fetchServer = async (
   seasonNo: number,
   tmdbOrImdbId: number
 ) => {
-  const server = servers[serverNumber];
+  const server = serversMeta[serverNumber];
 
   const url = `${server[type]}${tmdbOrImdbId ? `/${tmdbOrImdbId}` : ""}${
     seasonNo ? `/${seasonNo}` : ""
