@@ -10,7 +10,8 @@ import ArrowLeft from "@/components/vectors/Arrow";
 import RadioActive from "@/components/vectors/RadioActive";
 import RadioInactive from "@/components/vectors/RadioInactive";
 import Quality from "@/components/vectors/Quality";
-import { Clock, CloudIcon, Server } from "lucide-react";
+import { Clock } from "lucide-react";
+import Cloud from "@/components/vectors/Cloud";
 import MiniScreenIcon from "@/components/vectors/MiniScreenIcon";
 import FullscreenIcon from "@/components/vectors/FullscreenIcon";
 import { formatDuration } from "@/lib/utils";
@@ -156,7 +157,7 @@ export default function Footer({ videoStore }: videoStoreOptions) {
           className={`dropdown ${serversExpanded ? "active" : null}`}
         >
           <button className="settings__btn">
-            <CloudIcon />
+            <Cloud />
           </button>
           <div
             className={`dropdown__menu ${serversExpanded ? "active" : null}`}
@@ -177,12 +178,12 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                               setCurrentServer(server);
                             }}
                             key={server.id}
+                            className={`${
+                              server.id === currentServer.id
+                                ? "bg-[rgba(255,255,255,0.3)]"
+                                : ""
+                            }`}
                           >
-                            {server.id === currentServer.id ? (
-                              <RadioActive />
-                            ) : (
-                              <RadioInactive />
-                            )}
                             {server.language} - {server.number + 1}
                           </div>
                         );
