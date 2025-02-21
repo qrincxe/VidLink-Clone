@@ -151,7 +151,49 @@ export default function Footer({ videoStore }: videoStoreOptions) {
         <button onClick={() => setIsPIP(!isPIP)} className="pip__btn">
           <PIPIcon />
         </button>
-
+        <div
+          onClick={toggleServers}
+          className={`dropdown ${serversExpanded ? "active" : null}`}
+        >
+          <button className="settings__btn">
+            <CloudIcon />
+          </button>
+          <div
+            className={`dropdown__menu ${serversExpanded ? "active" : null}`}
+          >
+            <div className="dropdown__content">
+              {serversExpanded ? (
+                <>
+                  <div className="expanded__list">
+                    {servers
+                      // .sort(
+                      //   (serverA, serverB) => serverA.number - serverB.number
+                      // )
+                      .map((server) => {
+                        return (
+                          <div
+                            onClick={() => {
+                              setCurrentServer(server);
+                            }}
+                            key={server.id}
+                          >
+                            {server.id === currentServer.id ? (
+                              <RadioActive />
+                            ) : (
+                              <RadioInactive />
+                            )}
+                            {server.language} - {server.number}
+                          </div>
+                        );
+                      })}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
+          </div>
+        </div>
         <div className={`dropdown ${settingsExpanded ? "active" : null}`}>
           <button onClick={toggleSettingsDropdown} className="settings__btn">
             <SettingsIcon />
@@ -238,43 +280,6 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                   {playbackSpeed}x <ArrowLeft />
                 </span>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div className={`dropdown ${toggleServers ? "active" : null}`}>
-          <button className="settings__btn">
-            <CloudIcon />
-          </button>
-          <div
-            className={`dropdown__menu ${serversExpanded ? "active" : null}`}
-          >
-            <div className="dropdown__content">
-              {serversExpanded ? (
-                <>
-                  <div className="expanded__list">
-                    {servers.map((server) => {
-                      return (
-                        <div
-                          onClick={() => {
-                            setCurrentServer(server);
-                          }}
-                          key={server.name}
-                        >
-                          {server.name === currentServer.name ? (
-                            <RadioActive />
-                          ) : (
-                            <RadioInactive />
-                          )}
-                          {server.language} - {server.name}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
             </div>
           </div>
         </div>
