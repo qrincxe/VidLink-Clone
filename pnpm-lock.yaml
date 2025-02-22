@@ -26,6 +26,9 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
+      country-flags-svg:
+        specifier: 2.0.0-beta.1
+        version: 2.0.0-beta.1
       hls.js:
         specifier: ^1.5.20
         version: 1.5.20
@@ -923,6 +926,10 @@ packages:
 
   concat-map@0.0.1:
     resolution: {integrity: sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==}
+
+  country-flags-svg@2.0.0-beta.1:
+    resolution: {integrity: sha512-nOJOoClV+Jy6sftBAJ7R1j+0zMu45T/ljZWP4lCCwcImRn5/55LapjNU+NM/gFiEGdKTEOiiyDpGn5yGaBHgsg==}
+    engines: {node: '>=16.0.0'}
 
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
@@ -3075,6 +3082,8 @@ snapshots:
   commander@7.2.0: {}
 
   concat-map@0.0.1: {}
+
+  country-flags-svg@2.0.0-beta.1: {}
 
   cross-spawn@7.0.6:
     dependencies:

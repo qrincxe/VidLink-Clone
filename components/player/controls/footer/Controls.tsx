@@ -16,7 +16,7 @@ import MiniScreenIcon from "@/components/vectors/MiniScreenIcon";
 import FullscreenIcon from "@/components/vectors/FullscreenIcon";
 import { formatDuration } from "@/lib/utils";
 import { videoStoreOptions } from "../../VideoControls";
-import Flag from "react-world-flags";
+import { IndianFlag, UKFlag, USFlag, VietnameseFlag } from '@/components/vectors/Flags'
 
 export default function Footer({ videoStore }: videoStoreOptions) {
   const {
@@ -183,8 +183,21 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                               }}
                             >
                               <div>
+                                {server.language === "English" ? (
+                                  <USFlag />
+                                ) : server.language === "Vietnamese" ? (
+                                  <VietnameseFlag />
+                                ) : (
+                                  <IndianFlag />
+                                )}
                                 <button>{server.language}</button>
-                                <span className="text-sm">Original Audio</span>
+                                <span className="text-sm">
+                                  {server.number === 1
+                                    ? "Original Audio"
+                                    : server.number === 2
+                                    ? "Max Original Audio"
+                                    : "Vietnamese Original Audio"}
+                                </span>
                               </div>
                               {/* <span>
                                 <HeartIcon />
