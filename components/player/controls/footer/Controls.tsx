@@ -10,7 +10,7 @@ import ArrowLeft from "@/components/vectors/Arrow";
 import RadioActive from "@/components/vectors/RadioActive";
 import RadioInactive from "@/components/vectors/RadioInactive";
 import Quality from "@/components/vectors/Quality";
-import { Clock } from "lucide-react";
+import { Clock, HeartIcon } from "lucide-react";
 import Cloud from "@/components/vectors/Cloud";
 import MiniScreenIcon from "@/components/vectors/MiniScreenIcon";
 import FullscreenIcon from "@/components/vectors/FullscreenIcon";
@@ -94,6 +94,8 @@ export default function Footer({ videoStore }: videoStoreOptions) {
 
   const toggleSettingsDropdown = () => {
     setCaptionsExpanded(false);
+    setQualitiesExpanded(false);
+    setServersExpanded(false);
     setSettingsExpanded(!settingsExpanded);
   };
 
@@ -184,6 +186,9 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                                 <button>{server.language}</button>
                                 <span className="text-sm">Original Audio</span>
                               </div>
+                              {/* <span>
+                                <HeartIcon />
+                              </span> */}
                             </div>
                           </>
                         );

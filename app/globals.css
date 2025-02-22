@@ -307,7 +307,7 @@ video {
   gap: 1rem;
   padding: 0.25rem;
   width: 16rem;
-}
+}   
 
 .dropdown__content div {
   display: flex;
@@ -322,6 +322,10 @@ video {
 
 .dropdown__content div:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+.dropdown__content .expanded__list div:hover div { 
+   background: none !important
 }
 
 .dropdown__content div button {
