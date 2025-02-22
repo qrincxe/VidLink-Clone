@@ -10,13 +10,18 @@ import ArrowLeft from "@/components/vectors/Arrow";
 import RadioActive from "@/components/vectors/RadioActive";
 import RadioInactive from "@/components/vectors/RadioInactive";
 import Quality from "@/components/vectors/Quality";
-import { Clock, HeartIcon } from "lucide-react";
+import { Clock, HeartIcon, Play } from "lucide-react";
 import Cloud from "@/components/vectors/Cloud";
 import MiniScreenIcon from "@/components/vectors/MiniScreenIcon";
 import FullscreenIcon from "@/components/vectors/FullscreenIcon";
 import { formatDuration } from "@/lib/utils";
 import { videoStoreOptions } from "../../VideoControls";
-import { IndianFlag, UKFlag, USFlag, VietnameseFlag } from '@/components/vectors/Flags'
+import {
+  IndianFlag,
+  UKFlag,
+  USFlag,
+  VietnameseFlag,
+} from "@/components/vectors/Flags";
 
 export default function Footer({ videoStore }: videoStoreOptions) {
   const {
@@ -152,14 +157,11 @@ export default function Footer({ videoStore }: videoStoreOptions) {
           </div>
         </div>
 
-        <button onClick={() => setIsPIP(!isPIP)} className="pip__btn">
-          <PIPIcon />
-        </button>
         <div
           onClick={toggleServers}
           className={`dropdown ${serversExpanded ? "active" : null}`}
         >
-          <button className="settings__btn">
+          <button className="servers__btn">
             <Cloud />
           </button>
           <div
@@ -167,7 +169,7 @@ export default function Footer({ videoStore }: videoStoreOptions) {
               serversExpanded ? "active" : null
             }`}
           >
-            <div className="dropdown__content">
+            <div className="dropdown__content servers__content">
               {serversExpanded ? (
                 <>
                   <div className="expanded__list">
@@ -181,6 +183,13 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                               onClick={() => {
                                 setCurrentServer(server);
                               }}
+                              className={`
+                                 ${
+                                   server.id === currentServer.id
+                                     ? "bg-[rgba(255,255,255,0.3)]"
+                                     : ""
+                                 }
+                                `}
                             >
                               <div>
                                 {server.language === "English" ? (
@@ -191,17 +200,21 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                                   <IndianFlag />
                                 )}
                                 <button>{server.language}</button>
-                                <span className="text-sm">
-                                  {server.number === 1
-                                    ? "Original Audio"
-                                    : server.number === 2
-                                    ? "Max Original Audio"
-                                    : "Vietnamese Original Audio"}
-                                </span>
+                                <span className="text-xs">{server.name}</span>
                               </div>
-                              {/* <span>
+                              <span className="flex gap-2">
                                 <HeartIcon />
-                              </span> */}
+                                <ArrowLeft
+                                  width={20}
+                                  height={20}
+                                  className={`
+                                    ${
+                                      server.id === currentServer.id
+                                        ? "opacity-100 bg-[var(--theme-color)] rounded-full grid place-items-center"
+                                        : "opacity-0"
+                                    }`}
+                                />
+                              </span>
                             </div>
                           </>
                         );
@@ -214,6 +227,11 @@ export default function Footer({ videoStore }: videoStoreOptions) {
             </div>
           </div>
         </div>
+
+        <button onClick={() => setIsPIP(!isPIP)} className="pip__btn">
+          <PIPIcon />
+        </button>
+
         <div className={`dropdown ${settingsExpanded ? "active" : null}`}>
           <button onClick={toggleSettingsDropdown} className="settings__btn">
             <SettingsIcon />

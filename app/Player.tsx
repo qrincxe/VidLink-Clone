@@ -15,7 +15,12 @@ interface PlayerProps {
   tmdbOrImdbId?: number;
 }
 
-export default function Player({ type, id, seasonNo, tmdbOrImdbId }: PlayerProps) {
+export default function Player({
+  type,
+  id,
+  seasonNo,
+  tmdbOrImdbId,
+}: PlayerProps) {
   const videoStore = useVideoStore();
   const {
     videoRef,
@@ -58,54 +63,59 @@ export default function Player({ type, id, seasonNo, tmdbOrImdbId }: PlayerProps
   useEffect(() => {
     const fetchServers = async () => {
       try {
-        const serverPromises = Object.keys(serversMeta).map(async (serverIndex) => {
-          const serverData = await fetchServer(
-            type,
-            Number(serverIndex),
-            id,
-            seasonNo,
-            tmdbOrImdbId
-          );
-          
-          if (!serverData) return null;
-
-          const newServers: Server[] = [];
-
-          if (Array.isArray(serverData)) {
-            newServers.push(
-              ...serverData.map(({ language, link, captions = [] }) => ({
-                id: createId(),
-                language,
-                url: link,
-                captions,
-                number: Number(serverIndex),
-              }))
+        const serverPromises = Object.keys(serversMeta).map(
+          async (serverIndex) => {
+            const serverData = await fetchServer(
+              type,
+              Number(serverIndex),
+              id,
+              seasonNo,
+              tmdbOrImdbId
             );
-          } else if (serverData.sources?.[0]) {
-            newServers.push({
-              id: createId(),
-              language: "English",
-              url: serverData.sources[0].url,
-              captions: serverData.captions || [],
-              number: Number(serverIndex),
-            });
-          } else if (serverData.playlistUrl) {
-            const serverInfo: Server = {
-              id: createId(),
-              language: "English",
-              url: serverData.playlistUrl,
-              captions: serverData.captions || [],
-              number: Number(serverIndex),
-            };
-            newServers.push(serverInfo);
-          }
 
-          return newServers;
-        });
+            if (!serverData) return null;
+
+            const newServers: Server[] = [];
+
+            if (Array.isArray(serverData)) {
+              newServers.push(
+                ...serverData.map(({ language, link, captions = [] }) => ({
+                  id: createId(),
+                  name: serversMeta[serverIndex].name,
+                  language,
+                  url: link,
+                  captions,
+                  number: Number(serverIndex),
+                }))
+              );
+            } else if (serverData.sources?.[0]) {
+              newServers.push({
+                id: createId(),
+                name: serversMeta[serverIndex].name,
+                language: "English",
+                url: serverData.sources[0].url,
+                captions: serverData.captions || [],
+                number: Number(serverIndex),
+              });
+            } else if (serverData.playlistUrl) {
+              const serverInfo: Server = {
+                id: createId(),
+                language: "English",
+                name: serversMeta[serverIndex].name,
+                url: serverData.playlistUrl,
+                captions: serverData.captions || [],
+                number: Number(serverIndex),
+              };
+              newServers.push(serverInfo);
+            }
+
+            return newServers;
+          }
+        );
 
         const results = await Promise.all(serverPromises);
         const validServers = results.flat().filter(Boolean);
-        
+
         setServers(validServers);
         if (!currentServer && validServers.length > 0) {
           setCurrentServer(validServers[0]);
@@ -149,14 +159,19 @@ export default function Player({ type, id, seasonNo, tmdbOrImdbId }: PlayerProps
 
         hls.on(Hls.Events.MANIFEST_PARSED, () => {
           videoRef.current.play();
-          setQualities(["Auto", ...hls.levels.map(level => level.height.toString())]);
+          setQualities([
+            "Auto",
+            ...hls.levels.map((level) => level.height.toString()),
+          ]);
         });
 
         return () => {
           hls.destroy();
           hlsRef.current = null;
         };
-      } else if (videoRef.current.canPlayType("application/vnd.apple.mpegurl")) {
+      } else if (
+        videoRef.current.canPlayType("application/vnd.apple.mpegurl")
+      ) {
         videoRef.current.src = m3u8URL;
       }
     };
@@ -167,13 +182,13 @@ export default function Player({ type, id, seasonNo, tmdbOrImdbId }: PlayerProps
   // Video control effects
   useEffect(() => {
     if (!videoRef.current) return;
-    
+
     if (isPlaying) {
       videoRef.current.play().catch(() => setIsPlaying(false));
     } else {
       videoRef.current.pause();
     }
-    
+
     videoRef.current.volume = isMuted ? 0 : videoVolume;
     videoRef.current.playbackRate = playbackSpeed;
   }, [isPlaying, videoVolume, isMuted, playbackSpeed]);
@@ -200,7 +215,11 @@ export default function Player({ type, id, seasonNo, tmdbOrImdbId }: PlayerProps
 
   return (
     <div className="w-full h-full">
-      <div className={`video__container ${!isPlaying ? "paused" : ""} ${isFullscreen ? "fullscreen" : ""}`}>
+      <div
+        className={`video__container ${!isPlaying ? "paused" : ""} ${
+          isFullscreen ? "fullscreen" : ""
+        }`}
+      >
         <VideoControls videoStore={videoStore} />
         <video
           ref={videoRef}
@@ -208,15 +227,16 @@ export default function Player({ type, id, seasonNo, tmdbOrImdbId }: PlayerProps
           onPlaying={() => setIsLoading(false)}
           onWaiting={() => setIsLoading(true)}
         >
-          {captions.map((caption) => 
-            caption.lang !== "None" && (
-              <track
-                key={caption.lang}
-                kind="subtitles"
-                srcLang={caption.lang}
-                src={`${window.location.origin}/api/vtt?vttUrl=${caption.url}`}
-              />
-            )
+          {captions.map(
+            (caption) =>
+              caption.lang !== "None" && (
+                <track
+                  key={caption.lang}
+                  kind="subtitles"
+                  srcLang={caption.lang}
+                  src={`${window.location.origin}/api/vtt?vttUrl=${caption.url}`}
+                />
+              )
           )}
         </video>
       </div>

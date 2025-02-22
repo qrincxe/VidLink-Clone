@@ -7,6 +7,7 @@ export interface Caption {
 
 export interface Server { 
   id: string;
+  name: string;
   url: string;
   language: string;
   captions: Caption[]

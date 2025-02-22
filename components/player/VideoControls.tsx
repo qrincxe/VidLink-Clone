@@ -32,7 +32,14 @@ export default function VideoControls({ videoStore }: videoStoreOptions) {
 
   return (
     <>
-      <div className="video__controls__container">
+      <div
+        className="video__controls__container"
+        style={
+          {
+            "--theme-color": "rgba(150,230,20,var(--tw-bg-opacity, 1))",
+          } as React.CSSProperties
+        }
+      >
         <div className="header__video__controls"></div>
         <div className="center__video__controls">
           {isLoading ? (
@@ -41,14 +48,14 @@ export default function VideoControls({ videoStore }: videoStoreOptions) {
             </>
           ) : (
             <>
-              <Controls videoStore={videoStore}/>
+              <Controls videoStore={videoStore} />
             </>
           )}
         </div>
 
-        <Timeline videoStore={videoStore}/>
+        <Timeline videoStore={videoStore} />
 
-        <Footer videoStore={videoStore}/>
+        <Footer videoStore={videoStore} />
       </div>
     </>
   );

@@ -15,7 +15,6 @@ export default function Timeline({ videoStore }: videoStoreOptions) {
         className="timeline__container"
         style={
           {
-            "--timeline-color": "blue",
             "--progress-position":
               duration === 0
                 ? 0
