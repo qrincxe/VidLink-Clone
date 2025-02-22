@@ -56,6 +56,8 @@ export default function Footer({ videoStore }: videoStoreOptions) {
     playbackSpeed,
     setPlaybackSpeed,
     servers,
+    setFavouriteServer,
+    favouriteServer,
   } = videoStore;
 
   const togglePlayback = () => {
@@ -157,11 +159,8 @@ export default function Footer({ videoStore }: videoStoreOptions) {
           </div>
         </div>
 
-        <div
-          onClick={toggleServers}
-          className={`dropdown ${serversExpanded ? "active" : null}`}
-        >
-          <button className="servers__btn">
+        <div className={`dropdown ${serversExpanded ? "active" : null}`}>
+          <button onClick={toggleServers} className="servers__btn">
             <Cloud />
           </button>
           <div
@@ -180,9 +179,6 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                         return (
                           <>
                             <div
-                              onClick={() => {
-                                setCurrentServer(server);
-                              }}
                               className={`
                                  ${
                                    server.id === currentServer.id
@@ -191,7 +187,11 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                                  }
                                 `}
                             >
-                              <div>
+                              <div
+                                onClick={() => {
+                                  setCurrentServer(server);
+                                }}
+                              >
                                 {server.language === "English" ? (
                                   <USFlag />
                                 ) : server.language === "Vietnamese" ? (
@@ -203,17 +203,31 @@ export default function Footer({ videoStore }: videoStoreOptions) {
                                 <span className="text-xs">{server.name}</span>
                               </div>
                               <span className="flex gap-2">
-                                <HeartIcon />
-                                <ArrowLeft
-                                  width={20}
-                                  height={20}
+                                <HeartIcon
+                                  onClick={() => {
+                                    setFavouriteServer(server);
+                                    window.location.reload();
+                                  }}
                                   className={`
-                                    ${
-                                      server.id === currentServer.id
-                                        ? "opacity-100 bg-[var(--theme-color)] rounded-full grid place-items-center"
-                                        : "opacity-0"
-                                    }`}
+                                   ${
+                                     server.metaId ===
+                                       favouriteServer?.metaId &&
+                                     server.language ===
+                                       favouriteServer?.language
+                                       ? "fill-[var(--theme-color)] stroke-[var(--theme-color)]"
+                                       : ""
+                                   }
+                                  `}
                                 />
+                                {server.id === currentServer.id ? (
+                                  <PlayIcon
+                                    width={20}
+                                    height={20}
+                                    className={`active`}
+                                  />
+                                ) : (
+                                  <ArrowLeft width={20} height={20} />
+                                )}
                               </span>
                             </div>
                           </>

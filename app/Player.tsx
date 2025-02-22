@@ -46,6 +46,7 @@ export default function Player({
     captions,
     setServers,
     servers,
+    favouriteServer,
   } = videoStore;
 
   const hlsRef = useRef(null);
@@ -81,6 +82,7 @@ export default function Player({
               newServers.push(
                 ...serverData.map(({ language, link, captions = [] }) => ({
                   id: createId(),
+                  metaId: serversMeta[serverIndex].metaId,
                   name: serversMeta[serverIndex].name,
                   language,
                   url: link,
@@ -91,6 +93,7 @@ export default function Player({
             } else if (serverData.sources?.[0]) {
               newServers.push({
                 id: createId(),
+                metaId: serversMeta[serverIndex].metaId,
                 name: serversMeta[serverIndex].name,
                 language: "English",
                 url: serverData.sources[0].url,
@@ -101,6 +104,7 @@ export default function Player({
               const serverInfo: Server = {
                 id: createId(),
                 language: "English",
+                metaId: serversMeta[serverIndex].metaId,
                 name: serversMeta[serverIndex].name,
                 url: serverData.playlistUrl,
                 captions: serverData.captions || [],
@@ -118,7 +122,17 @@ export default function Player({
 
         setServers(validServers);
         if (!currentServer && validServers.length > 0) {
-          setCurrentServer(validServers[0]);
+          const favouriteServerIndex = validServers.findIndex(
+            (server) =>
+              server.metaId === favouriteServer?.metaId &&
+              server.language === favouriteServer?.language
+          );
+          console.log({ favouriteServerIndex });
+          if (favouriteServerIndex !== -1) {
+            setCurrentServer(validServers[favouriteServerIndex]);
+          } else {
+            setCurrentServer(validServers[0]);
+          }
         }
       } catch (error) {
         console.error("Error fetching servers:", error);
@@ -126,7 +140,7 @@ export default function Player({
     };
 
     fetchServers();
-  }, [id, tmdbOrImdbId, seasonNo, type]);
+  }, [id, tmdbOrImdbId, seasonNo, type, favouriteServer]);
 
   useEffect(() => {
     if (!currentServer) return;

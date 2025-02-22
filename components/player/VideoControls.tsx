@@ -36,7 +36,11 @@ export default function VideoControls({ videoStore }: videoStoreOptions) {
         className="video__controls__container"
         style={
           {
-            "--theme-color": "rgba(150,230,20,var(--tw-bg-opacity, 1))",
+            "--theme-color-r": "234",
+            "--theme-color-g": "240",
+            "--theme-color-b": "72",
+            "--theme-color":
+              "rgba(var(--theme-color-r),var(--theme-color-g),var(--theme-color-b))",
           } as React.CSSProperties
         }
       >

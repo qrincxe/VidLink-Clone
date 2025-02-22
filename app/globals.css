@@ -392,8 +392,33 @@ video {
 }
 
 .dropdown__content .expanded__list div svg:nth-child(2) {
+  padding: 0.1em;
+  opacity: 0;
   pointer-events: none;
   transition: opacity 150ms ease-in-out;
+}
+
+.dropdown__content .expanded__list div svg:nth-child(2).active {
+  padding: 0.25em;
+  opacity: 100;
+  border-radius: 100%;
+  display: grid;
+  place-items: center;
+  background-color: rgba(
+    var(--theme-color-r),
+    var(--theme-color-g),
+    var(--theme-color-b),
+    0.3
+  );
+}
+
+.dropdown__content .expanded__list div svg:nth-child(2).active path {
+  fill: rgba(
+    var(--theme-color-r),
+    var(--theme-color-g),
+    var(--theme-color-b),
+    1
+  );
 }
 
 .dropdown__content .expanded__list div:hover svg:nth-child(2) {
