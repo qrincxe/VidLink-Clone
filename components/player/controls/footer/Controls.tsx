@@ -16,6 +16,7 @@ import MiniScreenIcon from "@/components/vectors/MiniScreenIcon";
 import FullscreenIcon from "@/components/vectors/FullscreenIcon";
 import { formatDuration } from "@/lib/utils";
 import { videoStoreOptions } from "../../VideoControls";
+import Flag from "react-world-flags";
 
 export default function Footer({ videoStore }: videoStoreOptions) {
   const {
@@ -160,32 +161,31 @@ export default function Footer({ videoStore }: videoStoreOptions) {
             <Cloud />
           </button>
           <div
-            className={`dropdown__menu ${serversExpanded ? "active" : null}`}
+            className={`dropdown__menu servers__menu ${
+              serversExpanded ? "active" : null
+            }`}
           >
             <div className="dropdown__content">
               {serversExpanded ? (
                 <>
                   <div className="expanded__list">
-                    <span className="font-semibold text-lg">Servers</span>
+                    {/* <span className="font-semibold text-lg">Servers</span> */}
                     {servers
-                      // .sort(
-                      //   (serverA, serverB) => serverA.number - serverB.number
-                      // )
+                      .sort((a, b) => a.language.localeCompare(b.language))
                       .map((server) => {
                         return (
-                          <div
-                            onClick={() => {
-                              setCurrentServer(server);
-                            }}
-                            key={server.id}
-                            className={`${
-                              server.id === currentServer.id
-                                ? "bg-[rgba(255,255,255,0.3)]"
-                                : ""
-                            }`}
-                          >
-                            {server.language} - {server.number + 1}
-                          </div>
+                          <>
+                            <div
+                              onClick={() => {
+                                setCurrentServer(server);
+                              }}
+                            >
+                              <div>
+                                <button>{server.language}</button>
+                                <span className="text-sm">Original Audio</span>
+                              </div>
+                            </div>
+                          </>
                         );
                       })}
                   </div>
