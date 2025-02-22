@@ -1,58 +1,56 @@
 import { findFlagUrlByNationality } from "country-flags-svg";
 import NextImage from "next/image";
 
+const width = 24;
+const height = 18;
+
 export function USFlag() {
-  const englishFlagUrl = findFlagUrlByNationality("American");
+  const usFlagURL = findFlagUrlByNationality("American");
   return (
     <>
       <NextImage
-        src={englishFlagUrl}
+        src={usFlagURL}
         alt="English flag url"
-        width={24}
-        height={18}
+        width={width}
+        height={height}
       />
     </>
   );
 }
 
 export function IndianFlag() {
-  const englishFlagUrl = findFlagUrlByNationality("Indian");
+  const indianFlagURL = findFlagUrlByNationality("Indian");
   return (
     <>
       <NextImage
-        src={englishFlagUrl}
+        src={indianFlagURL}
         alt="English flag url"
-        width={20}
-        height={24}
+        width={width}
+        height={height}
       />
     </>
   );
 }
 
 export function VietnameseFlag() {
-  const englishFlagUrl = findFlagUrlByNationality("Vietnamese");
+  const vietnameseFlagURL = findFlagUrlByNationality("Vietnamese");
   return (
     <>
       <NextImage
-        src={englishFlagUrl}
-        alt="English flag url"
-        width={24}
-        height={18}
+        src={vietnameseFlagURL}
+        alt="Vietnamese flag url"
+        width={width}
+        height={height}
       />
     </>
   );
 }
 
 export function UKFlag() {
-  const englishFlagUrl = countryFlags.findFlagUrlByNationality("British");
+  const UKFlagUrl = countryFlags.findFlagUrlByNationality("British");
   return (
     <>
-      <NextImage
-        src={englishFlagUrl}
-        alt="English flag url"
-        width={24}
-        height={18}
-      />
+      <NextImage src={UKFlagUrl} alt="UK flag" width={width} height={height} />
     </>
   );
 }
