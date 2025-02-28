@@ -5,7 +5,7 @@ import Player from "./Player";
 export default function Home() {
   return (
     <>
-      <Player type="movie" id="597" />
+      <Player type="movie" id="tv" />
     </>
   );
 }
